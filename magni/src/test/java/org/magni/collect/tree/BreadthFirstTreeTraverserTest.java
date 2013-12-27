@@ -27,7 +27,7 @@ public class BreadthFirstTreeTraverserTest extends TreeTraverserTestBase {
 	
 	@Test(expected=NullPointerException.class)
 	public void testNullRootThrowsException() {
-		TEST_TREENODE_TRAVERSER.breadthFirstIterator(null);
+		TEST_TREENODE_TRAVERSER.breadthFirst(null);
 	}
 	
 	/** 
@@ -60,7 +60,7 @@ public class BreadthFirstTreeTraverserTest extends TreeTraverserTestBase {
 		
 		TestTreeNode a = new TestTreeNode("a", b, c);
 		
-		assertIteratorOrderMatches(TEST_TREENODE_TRAVERSER.breadthFirstIterator(a), a, b, c, d, e, f, g);
+		assertIteratorOrderMatches(TEST_TREENODE_TRAVERSER.breadthFirst(a).iterator(), a, b, c, d, e, f, g);
 	}
 	
 	@Test
@@ -76,9 +76,12 @@ public class BreadthFirstTreeTraverserTest extends TreeTraverserTestBase {
 		TestTreeNode c = new TestTreeNode("c", f, g);
 		
 		TestTreeNode a = new TestTreeNode("a", b, c);
-		assertIteratorOrderMatches(TEST_TREENODE_TRAVERSER.breadthFirstIterator(a), a, b, c, d, e, f, g);
-		assertIteratorOrderMatches(TEST_TREENODE_TRAVERSER.breadthFirstIterator(a), a, b, c, d, e, f, g);
-		assertIteratorOrderMatches(TEST_TREENODE_TRAVERSER.breadthFirstIterator(a), a, b, c, d, e, f, g);
+		
+		Iterable<TestTreeNode> breadthFirstIterable = TEST_TREENODE_TRAVERSER.breadthFirst(a);
+		
+		assertIteratorOrderMatches(breadthFirstIterable.iterator(), a, b, c, d, e, f, g);
+		assertIteratorOrderMatches(breadthFirstIterable.iterator(), a, b, c, d, e, f, g);
+		assertIteratorOrderMatches(breadthFirstIterable.iterator(), a, b, c, d, e, f, g);
 	}
 	
 }

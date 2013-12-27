@@ -27,7 +27,7 @@ public class DepthFirstTreeTraverserTest extends TreeTraverserTestBase {
 
 	@Test(expected = NullPointerException.class)
 	public void testNullRootThrowsException() {
-		TEST_TREENODE_TRAVERSER.depthFirstIterator(null);
+		TEST_TREENODE_TRAVERSER.depthFirst(null);
 	}
 	
 	/** 
@@ -60,7 +60,7 @@ public class DepthFirstTreeTraverserTest extends TreeTraverserTestBase {
 		
 		TestTreeNode a = new TestTreeNode("a", b, c);
 		
-		Iterator<TestTreeNode> iterator = TEST_TREENODE_TRAVERSER.depthFirstIterator(a);
+		Iterator<TestTreeNode> iterator = TEST_TREENODE_TRAVERSER.depthFirst(a).iterator();
 		
 		assertIteratorOrderMatches(iterator, a, b, d, e, c, f, g);
 		
@@ -80,9 +80,11 @@ public class DepthFirstTreeTraverserTest extends TreeTraverserTestBase {
 		
 		TestTreeNode a = new TestTreeNode("a", b, c);
 		
-		assertIteratorOrderMatches(TEST_TREENODE_TRAVERSER.depthFirstIterator(a), a, b, d, e, c, f, g);
-		assertIteratorOrderMatches(TEST_TREENODE_TRAVERSER.depthFirstIterator(a), a, b, d, e, c, f, g);
-		assertIteratorOrderMatches(TEST_TREENODE_TRAVERSER.depthFirstIterator(a), a, b, d, e, c, f, g);
+		Iterable<TestTreeNode> depthFirstIterable = TEST_TREENODE_TRAVERSER.depthFirst(a);
+		
+		assertIteratorOrderMatches(depthFirstIterable.iterator(), a, b, d, e, c, f, g);
+		assertIteratorOrderMatches(depthFirstIterable.iterator(), a, b, d, e, c, f, g);
+		assertIteratorOrderMatches(depthFirstIterable.iterator(), a, b, d, e, c, f, g);
 		
 	}
 

@@ -89,7 +89,7 @@ public class BreadthFirstTreeTraverserExample {
 			@Override
 			protected Iterable<TestTreeNode> getChildrenOf(TestTreeNode parent) {
 				return parent.getChildren();
-			}}.breadthFirstIterable(a)) {
+			}}.breadthFirst(a)) {
 
 			System.out.println(node);
 		}

@@ -28,68 +28,73 @@ public abstract class TreeTraverser<E> {
 	protected abstract Iterable<E> getChildrenOf(E parent);
 	
 	
-	Iterator<E> depthFirstIterator(final E root) {
+	public Iterable<E> depthFirst(final E root) {
 		checkRootIsNotNull(root);
-		return new Iterator<E>() {
-			
-			@SuppressWarnings("unchecked")
-			private LinkedList<E> nodes = new LinkedList<E>(Arrays.<E>asList(root));
-			
-			public boolean hasNext() {
-				return !nodes.isEmpty();
-			}
-
-			public E next() {
-				E nextNode = nodes.removeFirst();
-				LinkedList<E> linkedList = new LinkedList<E>();
-				
-				for (E e : getChildrenOf(nextNode)) {
-					linkedList.add(e);
-				}
-				
-				linkedList.addAll(nodes);
-				nodes = linkedList;
-				return nextNode;
-			}
-
-			public void remove() {
-				throw new UnsupportedOperationException();
-			}
-
-		};
-	}
-	
-	Iterator<E> breadthFirstIterator(final E root) {
-		checkRootIsNotNull(root);
-		return new Iterator<E>() {
-			
-			@SuppressWarnings("unchecked")
-			private LinkedList<E> nodes = new LinkedList<E>(Arrays.<E>asList(root));
-			
-			public boolean hasNext() {
-				return !nodes.isEmpty();
-			}
-
-			public E next() {
-				E nextNode = nodes.removeFirst();
-				for (E e : getChildrenOf(nextNode)) {
-					nodes.addLast(e);
-				}
-				return nextNode;
-			}
-
-			public void remove() {
-				throw new UnsupportedOperationException();
-			}
-
-		};
-	}
-	
-	public Iterable<E> breadthFirstIterable(final E root) {
+		
 		return new Iterable<E>() {
 
 			public Iterator<E> iterator() {
-				return breadthFirstIterator(root);
+				return new Iterator<E>() {
+					
+					@SuppressWarnings("unchecked")
+					private LinkedList<E> nodes = new LinkedList<E>(Arrays.<E>asList(root));
+					
+					public boolean hasNext() {
+						return !nodes.isEmpty();
+					}
+				
+					public E next() {
+						E nextNode = nodes.removeFirst();
+						LinkedList<E> linkedList = new LinkedList<E>();
+						
+						for (E e : getChildrenOf(nextNode)) {
+							linkedList.add(e);
+						}
+						
+						linkedList.addAll(nodes);
+						nodes = linkedList;
+						return nextNode;
+					}
+				
+					public void remove() {
+						throw new UnsupportedOperationException();
+					}
+				
+				};
+			}
+			
+		};
+		
+	}
+	
+	public Iterable<E> breadthFirst(final E root) {
+		checkRootIsNotNull(root);
+		
+		return new Iterable<E>() {
+
+			public Iterator<E> iterator() {
+				return new Iterator<E>() {
+					
+					@SuppressWarnings("unchecked")
+					private LinkedList<E> nodes = new LinkedList<E>(Arrays.<E>asList(root));
+					
+					public boolean hasNext() {
+						return !nodes.isEmpty();
+					}
+				
+					public E next() {
+						E nextNode = nodes.removeFirst();
+						for (E e : getChildrenOf(nextNode)) {
+							nodes.addLast(e);
+						}
+						return nextNode;
+					}
+				
+					public void remove() {
+						throw new UnsupportedOperationException();
+					}
+				
+				};
 			}
 			
 		};
