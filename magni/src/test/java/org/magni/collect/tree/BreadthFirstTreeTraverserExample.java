@@ -25,6 +25,20 @@ import java.util.List;
 public class BreadthFirstTreeTraverserExample {
 
 	/**
+	 * Demonstration of what needs to be implemented 
+	 * to be able to traverse a custom tree class
+	 */
+	private static final TreeTraverser<TestTreeNode> TESTTREENODE_TRAVERSER = 
+	new TreeTraverser<TestTreeNode>() {
+
+		@Override
+		protected Iterable<TestTreeNode> getChildrenOf(TestTreeNode parent) {
+			return parent.getChildren();
+		}
+	};
+	
+	
+	/**
 	 * Test Tree Node class for the sake of the example
 	 */
 	static class TestTreeNode {
@@ -70,7 +84,6 @@ public class BreadthFirstTreeTraverserExample {
 	 *  d    e   f   g
 	 *  </pre></tt>
 	 */
-
 	public static void main(String[] args) {
 
 		TestTreeNode d = new TestTreeNode("d");
@@ -84,15 +97,9 @@ public class BreadthFirstTreeTraverserExample {
 
 		TestTreeNode a = new TestTreeNode("a", b, c);
 
-		for (TestTreeNode node : new TreeTraverser<TestTreeNode>() {
-
-			@Override
-			protected Iterable<TestTreeNode> getChildrenOf(TestTreeNode parent) {
-				return parent.getChildren();
-			}}.breadthFirst(a)) {
+		for (TestTreeNode node : TESTTREENODE_TRAVERSER.breadthFirst(a)) {
 
 			System.out.println(node);
 		}
 	}
-
 }
