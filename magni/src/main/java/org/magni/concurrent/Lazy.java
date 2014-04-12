@@ -1,5 +1,5 @@
 /*
- *   Copyright 2013 Peter G. Horvath
+ *   Copyright 2014 Peter G. Horvath
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,33 +15,28 @@
  */
 package org.magni.concurrent;
 
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
-class CallableLazyInitializer<T> extends LazyInitializer<T> {
+/**
+ * @author Peter G. Horvath
+ * 
+ */
+public class Lazy {
 
-	private final Callable<T> initializer;
-
-	CallableLazyInitializer(Callable<T> initializer) {
-		if(initializer == null) {
-			throw new NullPointerException("initializer must not be null");
-		}
-		this.initializer = initializer;
+	public static <T> LazyInitializer<T> initializer(Callable<T> initializer) {
+		return new CallableLazyInitializer<T>(initializer);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.magni.concurrent.initializer.LazyInitializer#initializeValue()
-	 */
-	@Override
-	protected T initializeValue() {
-		try {
-			return initializer.call();
-		} catch (Exception e) {
-			throw new LazyInitializerException(
-					"Lazy initializer threw exception",	e);
-		}
+	public static <E> List<E> list(Callable<List<E>> initializerCallable) {
+		
+		return new LazyList<E>(initializerCallable);
+	}
+
+	public static <K, V> Map<K, V> map(Callable<Map<K, V>> initializerCallable) {
+		
+		return new LazyMap<K, V>(initializerCallable);
 	}
 
 }

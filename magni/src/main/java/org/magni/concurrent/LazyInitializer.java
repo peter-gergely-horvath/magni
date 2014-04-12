@@ -41,7 +41,7 @@ public abstract class LazyInitializer<T> {
 	 * 
 	 * @return the value contained in this LazyInitializer.
 	 */
-	public T get() {
+	public final T get() {
 		
         T valueToReturn = value;
         if (valueToReturn == null) {
