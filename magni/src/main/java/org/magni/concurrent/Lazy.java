@@ -18,6 +18,7 @@ package org.magni.concurrent;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.concurrent.Callable;
 
 /**
@@ -51,6 +52,10 @@ public class Lazy {
 	public static <E> Set<E> set(Callable<Set<E>> initializerCallable) {
 		
 		return new LazySet<E>(initializerCallable);
+	}
+	
+	public static <K, V> SortedMap<K, V> sortedMap(Callable<SortedMap<K, V>> initializerCallable) {
+		return new LazySortedMap<K, V>(initializerCallable);
 	}
 
 }
