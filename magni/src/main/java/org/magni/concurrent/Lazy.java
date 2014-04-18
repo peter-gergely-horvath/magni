@@ -33,6 +33,13 @@ public class Lazy {
 		
 		return new LazyList<E>(initializerCallable);
 	}
+	
+	public static <E> List<E> listWithRandomAccessSupport(Callable<List<E>> initializerCallable) {
+		
+		return new RandomAccessLazyList<E>(initializerCallable);
+	}
+	
+	
 
 	public static <K, V> Map<K, V> map(Callable<Map<K, V>> initializerCallable) {
 		
