@@ -17,7 +17,7 @@ package org.magni.concurrent;
 
 import java.util.concurrent.Callable;
 
-class CallableLazyInitializer<T> extends LazyInitializer<T> {
+class CallableLazyInitializer<T> extends Lazy.Initializer<T> {
 
 	private final Callable<T> initializer;
 

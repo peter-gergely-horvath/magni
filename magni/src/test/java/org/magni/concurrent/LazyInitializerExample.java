@@ -23,7 +23,7 @@ package org.magni.concurrent;
  */
 public class LazyInitializerExample {
 
-	private static final LazyInitializer<String> LAZY_RESOURCE = new LazyInitializer<String>() {
+	private static final Lazy.Initializer<String> LAZY_RESOURCE = new Lazy.Initializer<String>() {
 
 		@Override
 		protected String initializeValue() {

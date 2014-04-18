@@ -27,7 +27,6 @@ import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 import org.magni.concurrent.ConcurrencyUtils;
-import org.magni.concurrent.LazyInitializer;
 
 /**
  * @author Peter G. Horvath
@@ -35,7 +34,7 @@ import org.magni.concurrent.LazyInitializer;
  */
 public class LazyInitializerTest {
 
-	private LazyInitializer<Long> lazyInitializer;
+	private Lazy.Initializer<Long> lazyInitializer;
 	private Callable<Long> mockCallable;
 
 	
@@ -99,16 +98,14 @@ public class LazyInitializerTest {
 			lazyInitializer.get();
 			fail("Should have thrown an exception");
 		} catch (RuntimeException e) {
-			assertEquals("Unable to initialize on first attempt", e
-					.getCause().getMessage());
+			assertEquals("Unable to initialize on first attempt", e.getMessage());
 		}
 
 		try {
 			lazyInitializer.get();
 			fail("Should have thrown an exception");
 		} catch (RuntimeException e) {
-			assertEquals("Unable to initialize on second attempt", e.getCause()
-					.getMessage());
+			assertEquals("Unable to initialize on second attempt", e.getMessage());
 		}
 
 		assertEquals(expectedValue, lazyInitializer.get());

@@ -40,7 +40,7 @@ public class ConcurrencyUtils {
 	 * 
 	 * @throws NullPointerException if initializerCallable is {@code null}
 	 */
-	public static <T> LazyInitializer<T> lazyInitializer(Callable<T> initializerCallable) {
+	public static <T> Lazy.Initializer<T> lazyInitializer(Callable<T> initializerCallable) {
 		return new CallableLazyInitializer<T>(initializerCallable);
 	}
 

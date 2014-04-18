@@ -5,7 +5,7 @@ import java.util.concurrent.Callable;
 
 public class LazyInitializedFooBarExample {
 
-	private static final LazyInitializer<FooBar> LAZY_FOOBAR_RESOURCE = 
+	private static final Lazy.Initializer<FooBar> LAZY_FOOBAR_RESOURCE = 
 			ConcurrencyUtils.lazyInitializer(new Callable<FooBar>() {
 
 		public FooBar call() throws Exception {
