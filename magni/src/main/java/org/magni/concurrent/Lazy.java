@@ -17,6 +17,7 @@ package org.magni.concurrent;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 /**
@@ -44,6 +45,12 @@ public class Lazy {
 	public static <K, V> Map<K, V> map(Callable<Map<K, V>> initializerCallable) {
 		
 		return new LazyMap<K, V>(initializerCallable);
+	}
+	
+	
+	public static <E> Set<E> set(Callable<Set<E>> initializerCallable) {
+		
+		return new LazySet<E>(initializerCallable);
 	}
 
 }
