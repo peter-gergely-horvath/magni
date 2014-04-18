@@ -38,7 +38,10 @@ class CallableLazyInitializer<T> extends LazyInitializer<T> {
 	protected T initializeValue() {
 		try {
 			return initializer.call();
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
+			throw e;
+		}
+		catch (Exception e) {
 			throw new LazyInitializerException(
 					"Lazy initializer threw exception",	e);
 		}
