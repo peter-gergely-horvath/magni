@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.concurrent.Callable;
 
 /**
@@ -31,31 +32,34 @@ public class Lazy {
 		return new CallableLazyInitializer<T>(initializer);
 	}
 
-	public static <E> List<E> list(Callable<List<E>> initializerCallable) {
-		
-		return new LazyList<E>(initializerCallable);
-	}
-	
-	public static <E> List<E> listWithRandomAccessSupport(Callable<List<E>> initializerCallable) {
-		
-		return new RandomAccessLazyList<E>(initializerCallable);
-	}
-	
-	
+	public static <E> List<E> list(Callable<List<E>> initializer) {
 
-	public static <K, V> Map<K, V> map(Callable<Map<K, V>> initializerCallable) {
-		
-		return new LazyMap<K, V>(initializerCallable);
+		return new LazyList<E>(initializer);
 	}
-	
-	
-	public static <E> Set<E> set(Callable<Set<E>> initializerCallable) {
-		
-		return new LazySet<E>(initializerCallable);
+
+	public static <E> List<E> listWithRandomAccessSupport(
+			Callable<List<E>> initializer) {
+
+		return new RandomAccessLazyList<E>(initializer);
 	}
-	
-	public static <K, V> SortedMap<K, V> sortedMap(Callable<SortedMap<K, V>> initializerCallable) {
-		return new LazySortedMap<K, V>(initializerCallable);
+
+	public static <K, V> Map<K, V> map(Callable<Map<K, V>> initializer) {
+
+		return new LazyMap<K, V>(initializer);
+	}
+
+	public static <E> Set<E> set(Callable<Set<E>> initializer) {
+
+		return new LazySet<E>(initializer);
+	}
+
+	public static <K, V> SortedMap<K, V> sortedMap(
+			Callable<SortedMap<K, V>> initializer) {
+		return new LazySortedMap<K, V>(initializer);
+	}
+
+	public static <E> SortedSet<E> sortedSet(Callable<SortedSet<E>> initializer) {
+		return new LazySortedSet<E>(initializer);
 	}
 
 }
