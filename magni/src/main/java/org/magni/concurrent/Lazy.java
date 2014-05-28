@@ -15,6 +15,7 @@
  */
 package org.magni.concurrent;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -87,9 +88,101 @@ public class Lazy {
 		protected abstract T initializeValue();
 
 	}
+	
+	/**
+	 * Private constructor to prevent instantiation: static utility class 
+	 */
+	private Lazy() {
+		// static utility class - no instances allowed
+	}
 
+	/**
+	 * Creates a {@link LazyInitializer} that uses the supplied {@code Callable}
+	 * to initialize its value.
+	 * 
+	 * @param initializer the {@code Callable} to initialize the value from  
+	 * @return a {@link Lazy.Initializer} that uses the supplied {@code Callable}
+	 * to initialize its value.
+	 * 
+	 * @throws NullPointerException if initializer is {@code null}
+	 */
 	public static <T> Lazy.Initializer<T> initializer(Callable<T> initializer) {
 		return new CallableLazyInitializer<T>(initializer);
+	}
+	
+	/**
+	 * <p>
+	 * Creates a proxy object for the specified 
+	 * {@code Class}, which lazy-initializes the 
+	 * target object using the supplied 
+	 * {@code Callable} on the first method
+	 * invocation (except {@code java.lang.Object.finalize()})
+	 * performed on the proxy.</p>
+	 * 
+	 * <p>
+	 * All method invocations except 
+	 * {@code java.lang.Object.finalize()} are
+	 * delegated to the target object (and 
+	 * thus cause the target object to be 
+	 * initialized).</p>
+	 * 
+	 * @param targetClass the class to proxy
+	 * @param initializerCallable the {@code Callable} that initializes the underlying object 
+	 * 
+	 * @return a proxy object that which lazy-initializes the target on the 
+	 * 	first method invocation using the supplied {@code Callable}
+	 * 
+	 * @throws ProxyCreationFailedException in case the proxy object could not be created
+	 */
+	public static <T> T lazyInitializerProxy(Class<T> targetClass,
+			Callable<T> initializerCallable) {
+		return lazyInitializerProxy(targetClass, IGNORE_FINALIZE_PROXYMETHODFILTER, initializerCallable);
+	}
+	
+
+	/**
+	 * Creates a proxy object for the specified 
+	 * {@code Class}, which lazy-initializes the 
+	 * target object using the supplied 
+	 * {@code Callable} on the first method
+	 * invocation performed on the proxy. 
+	 * 
+	 * 
+	 * @param targetClass the class to proxy
+	 * @param methodFilter a filter which decides whether a method should be handled by the proxy or not
+	 * @param initializerCallable the {@code Callable} that initializes the underlying object 
+	 * 
+	 * @return a proxy object that which lazy-initializes the target on the 
+	 * 	first method invocation using the supplied {@code Callable}
+	 * 
+	 * @throws ProxyCreationFailedException in case the proxy object could not be created
+	 */
+	public static <T> T lazyInitializerProxy(Class<T> targetClass,
+			ProxyMethodFilter methodFilter, Callable<T> initializerCallable)
+			throws ProxyCreationFailedException {
+	
+		try {
+	
+			javassist.util.proxy.ProxyFactory factory = new javassist.util.proxy.ProxyFactory();
+			factory.setSuperclass(targetClass);
+	
+			if (methodFilter != null) {
+				factory.setFilter(new JavassistMethodFilterAdapter(methodFilter));
+			}
+	
+			@SuppressWarnings("unchecked")
+			Class<T> proxyObjectClass = factory.createClass();
+			T proxyObj = proxyObjectClass.newInstance();
+	
+			LazyInitializerProxy<T> lp = new LazyInitializerProxy<T>(initializerCallable);
+			((javassist.util.proxy.ProxyObject) proxyObj).setHandler(lp);
+	
+			return proxyObj;
+	
+		} catch (Exception e) {
+			throw new ProxyCreationFailedException(
+					"Failed to create the proxy object", e);
+		}
 	}
 
 	public static <E> List<E> list(Callable<List<E>> initializer) {
@@ -121,5 +214,16 @@ public class Lazy {
 	public static <E> SortedSet<E> sortedSet(Callable<SortedSet<E>> initializer) {
 		return new LazySortedSet<E>(initializer);
 	}
+	
+	static final ProxyMethodFilter IGNORE_FINALIZE_PROXYMETHODFILTER = 
+			new ProxyMethodFilter() {
+	
+				public boolean isHandled(Method m) {
+					// ignore java.lang.Object.finalize() method
+					return ! (m.getName().equals("finalize") && 
+							 m.getParameterTypes().length == 0);
+				}
+		
+	};
 
 }
