@@ -1,5 +1,5 @@
 /*
- *   Copyright 2013 Peter G. Horvath
+ *   Copyright 2013-2016 Peter G. Horvath
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package org.magni.collect.tree;
 
 import java.util.Iterator;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 /**
  * @author Peter G. Horvath
@@ -25,7 +25,7 @@ import org.junit.Test;
  */
 public class DepthFirstTreeTraverserTest extends TreeTraverserTestBase {
 
-	@Test(expected = NullPointerException.class)
+	@Test(expectedExceptions = NullPointerException.class)
 	public void testNullRootThrowsException() {
 		TEST_TREENODE_TRAVERSER.depthFirst(null);
 	}

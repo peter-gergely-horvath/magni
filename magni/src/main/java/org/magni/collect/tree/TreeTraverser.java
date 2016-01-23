@@ -1,5 +1,5 @@
 /*
- *   Copyright 2013 Peter G. Horvath
+ *   Copyright 2013-2016 Peter G. Horvath
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -36,7 +36,6 @@ public abstract class TreeTraverser<E> {
 			public Iterator<E> iterator() {
 				return new Iterator<E>() {
 					
-					@SuppressWarnings("unchecked")
 					private LinkedList<E> nodes = new LinkedList<E>(Arrays.<E>asList(root));
 					
 					public boolean hasNext() {
@@ -48,7 +47,7 @@ public abstract class TreeTraverser<E> {
 						LinkedList<E> linkedList = new LinkedList<E>();
 						
 						for (E e : getChildrenOf(nextNode)) {
-							linkedList.add(e);
+							linkedList.addLast(e);
 						}
 						
 						linkedList.addAll(nodes);
@@ -74,8 +73,7 @@ public abstract class TreeTraverser<E> {
 
 			public Iterator<E> iterator() {
 				return new Iterator<E>() {
-					
-					@SuppressWarnings("unchecked")
+
 					private LinkedList<E> nodes = new LinkedList<E>(Arrays.<E>asList(root));
 					
 					public boolean hasNext() {

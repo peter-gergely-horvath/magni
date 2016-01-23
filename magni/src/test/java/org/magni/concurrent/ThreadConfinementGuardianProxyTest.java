@@ -1,5 +1,5 @@
 /*
- *   Copyright 2013 Peter G. Horvath
+ *   Copyright 2013-2016 Peter G. Horvath
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -23,10 +23,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Test;
-import org.magni.concurrent.ConcurrencyUtils;
+import org.testng.annotations.AfterClass;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * @author Peter G. Horvath
@@ -39,20 +38,18 @@ public class ThreadConfinementGuardianProxyTest {
 	@Test
 	public void testAccessFromSameThread() {
 
-		HashSet<String> guardedHashSet = ConcurrencyUtils
-				.threadConfinementGuardian(new HashSet<String>());
+		HashSet<String> guardedHashSet = ThreadConfinementGuardian.create(new HashSet<String>());
 
 		guardedHashSet.add("Foobar");
 
 		Assert.assertTrue(guardedHashSet.contains("Foobar"));
 	}
 
-	@Test(expected=org.magni.concurrent.ThreadConfinementViolationException.class)
+	@Test(expectedExceptions=org.magni.concurrent.ThreadConfinementViolationException.class)
 	public void testAccessFromAnotherThread() {
 
 		try {
-			final HashSet<String> guardedHashSet = ConcurrencyUtils
-					.threadConfinementGuardian(new HashSet<String>());
+			final HashSet<String> guardedHashSet = ThreadConfinementGuardian.create(new HashSet<String>());
 
 			guardedHashSet.add("Foobar");
 
@@ -63,7 +60,10 @@ public class ThreadConfinementGuardianProxyTest {
 				}
 			});
 
-			future.get();
+			Boolean result = future.get();
+			
+			Assert.assertTrue(result);
+			
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		} catch (ExecutionException e) {

@@ -1,5 +1,5 @@
 /*
- *   Copyright 2013 Peter G. Horvath
+ *   Copyright 2013-2016 Peter G. Horvath
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -18,15 +18,15 @@ package org.magni.concurrent;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.fail;
 
 import java.util.concurrent.Callable;
 
 import org.easymock.EasyMock;
-import org.junit.Before;
-import org.junit.Test;
-import org.magni.concurrent.ConcurrencyUtils;
+
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
 
 /**
  * @author Peter G. Horvath
@@ -39,16 +39,16 @@ public class LazyInitializerTest {
 
 	
 	
-	@Before @SuppressWarnings("unchecked")
+	@BeforeMethod @SuppressWarnings("unchecked")
 	public void beforeTests() {
 		mockCallable = EasyMock.createMock(Callable.class);
-		lazyInitializer = ConcurrencyUtils.<Long>lazyInitializer(mockCallable);
+		lazyInitializer = Lazy.<Long>initializer(mockCallable);
 	}
 
 	
-	@Test(expected=NullPointerException.class)
+	@Test(expectedExceptions=NullPointerException.class)
 	public void testNullInitializerThrowsNullPointerException() {
-		ConcurrencyUtils.<Long>lazyInitializer(null);
+		Lazy.<Long>initializer(null);
 	}
 
 	
