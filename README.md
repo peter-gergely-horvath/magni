@@ -8,6 +8,6 @@ my life easier when I could not find any out-of-the-box solution for the purpose
 
 ## Featues ##
 
-  * [Collection Utilities](CollectionUtilities.md)
-  * [Thread-safe lazy initialization support](ThreadSafeLazyInitialization.md)
-  * [Lazy-initialization proxy](LazyInitializationProxy.md)
+  * [Collection Utilities](http://github.com/peter-gergely-horvath/magni/blob/wiki/CollectionUtilities.md)
+  * [Thread-safe lazy initialization support](http://github.com/peter-gergely-horvath/magni/blob/wiki/ThreadSafeLazyInitialization.md)
+  * [Lazy-initialization proxy](http://github.com/peter-gergely-horvath/magni/blob/wiki/LazyInitializationProxy.md)
